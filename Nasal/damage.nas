@@ -20,6 +20,7 @@ var cannon_types = {
     " GAU-8/A hit":           0.10, # 30mm
     " BK27 cannon hit":       0.07, # 27mm
     " GSh-30 hit":            0.10, # 30mm
+    " GSh-23 hit":            0.065,# 23mm
     " 7.62 hit":              0.005,# 7.62mm
     " 50 BMG hit":            0.015,# 12.7mm
 };
@@ -236,14 +237,11 @@ var fail_systems = func (probability) {
 	#if we needed more custom stuff, we could do a for loop here.
 	#for(var i = 0;i < 1; i = i + 1) { #
 	if (rand() < probability) {
-		#setprop("controls/engines/engine["~i~"]/faults/serviceable",0);
-		#per ch53e.nas lines 973 and 974, setting "state" and "rotor" to 0 will kill the engine
-		#the rotors keep spinning at a slow speed, but the engines fail. rpms decrease over about ~15 seconds to negligable.
-		setprop("sim/model/ch53e/state",0);
+		setprop("sim/model/uh1/state",0);
 		setprop("controls/engines/engine/magnetos", 0);
 		#set a listener so that if a restart is attempted, it'll fail.
-		setlistener("sim/model/ch53e/state",func { 
-						setprop("sim/model/ch53e/state",0);
+		setlistener("sim/model/uh1/state",func { 
+						setprop("sim/model/uh1/state",0);
 						setprop("controls/engines/engine/magnetos", 0); 
 						});
 		failed += 1;
